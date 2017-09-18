@@ -3,8 +3,6 @@ package com.chhota.architecturesample;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 
 import java.util.List;
@@ -26,7 +24,7 @@ public class MainViewModel extends AndroidViewModel {
         context = application.getApplicationContext();
     }
 
-    public LiveData<List<User>> getUser(){
+    public LiveData<List<User>> getUser(boolean forceRefresh){
         if(userList == null){
             loadUser();
         }
@@ -39,4 +37,14 @@ public class MainViewModel extends AndroidViewModel {
 
         userList = userRepository.getUserList(context);
     }
+
+    public void forceRefreshData(){
+        //TODO if this is injected no need to worry about this null check
+        if(userRepository == null)
+            userRepository = new UserRepository();
+
+        userRepository.refreshData(context);
+    }
+
+
 }
