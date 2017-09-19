@@ -6,6 +6,8 @@ import android.util.Log;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -17,6 +19,13 @@ import retrofit2.Response;
 public class UserRepository {
 
     private static final String TAG = "UserRepository";
+
+    @Inject
+    PreferenceManager preferenceManager;
+
+    public UserRepository() {
+        AppController.getPrefrenceComponent().inject(this);
+    }
 
     private static final long cacheExpirationTime = 60 * 1000 * 1;
     //TODO inject this using dagger
@@ -40,7 +49,7 @@ public class UserRepository {
     }
 
     private boolean isCacheExpire(Context context) {
-        PreferenceManager preferenceManager = new PreferenceManager(context);
+        int a = 0;
         Long lastSaveTime = preferenceManager.getUserSaveTime();
         return System.currentTimeMillis() - lastSaveTime > cacheExpirationTime;
     }
